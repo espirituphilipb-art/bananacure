@@ -1,10 +1,11 @@
-from django.contrib.auth import authenticate
-from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, get_user_model
 from rest_framework import status, viewsets
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from .serializers import UserSerializer
+
+User = get_user_model()
 
 
 @api_view(['POST'])
@@ -22,6 +23,7 @@ def login_view(request):
                 "username": user.username,
                 "email": user.email,
                 "first_name": user.first_name,
+                "role": getattr(user, 'role', 'Standard User'),
                 "is_staff": user.is_staff
             }
         }, status=status.HTTP_200_OK)

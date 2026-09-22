@@ -5,9 +5,9 @@ services:
     image: postgres:16-alpine
     container_name: postgres_db
     environment:
-      POSTGRES_USER: dev_user
-      POSTGRES_PASSWORD: dev_password
-      POSTGRES_DB: app_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: '123123123'
+      POSTGRES_DB: bananacure
     ports:
       - "5432:5432"
     volumes:

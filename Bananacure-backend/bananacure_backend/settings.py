@@ -44,6 +44,9 @@ INSTALLED_APPS = [
     'core',
 ]
 
+# Set custom user model from core app
+AUTH_USER_MODEL = 'core.User'
+
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',  # Must be at the top of MIDDLEWARE
     'django.middleware.security.SecurityMiddleware',
@@ -70,6 +73,7 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+                'django.template.processors.request',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
@@ -90,7 +94,7 @@ DATABASES = {
         'NAME': 'bananacure',
         'USER': 'postgres',
         'PASSWORD': '123123123',
-        'HOST': 'localhost',
+        'HOST': '127.0.0.1',
         'PORT': '5432',
     }
 }
