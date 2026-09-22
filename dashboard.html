@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bananacure Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            /* Aesthetic modern Green to Yellow to White linear gradient backdrop */
+            background: linear-gradient(135deg, #1e3a1a 0%, #a18105 50%, #ffffff 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: #1c2d15;
+        }
+        /* Frosted Glassmorphism Panels to let the green/yellow/white gradient shine through beautifully */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 8px 32px 0 rgba(27, 49, 19, 0.15);
+        }
+        .nav-link {
+            transition: all 0.3s ease;
+            color: #;
+        }
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.4);
+            color: #000000;
+        }
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.85);
+            border-left: 5px solid #eab308;
+            color: #1e3a1a;
+            font-weight: 700;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active-tab {
+            display: block;
+        }
+        /* Custom UI Input styling overriding basic dark inputs to complement the bright fresh layout */
+        input, select {
+            background: rgba(255, 255, 255, 0.7) !important;
+            color: #1e3a1a !important;
+            border: 1px solid rgba(30, 58, 26, 0.2) !important;
+        }
+        input::placeholder {
+            color: #5c7a52 !important;
+        }
+    </style>
+</head>
+<body class="flex">
+
+    <aside class="w-72 h-screen fixed left-0 top-0 glass-panel border-r flex flex-col justify-between z-50">
+        <div>
+            <div class="p-6 border-b border-black/10 flex items-center gap-3">
+                <div class="bg-yellow-400 text-amber-900 p-2.5 rounded-2xl shadow-inner border border-yellow-300 flex items-center justify-center">
+                    <svg class="w-7 h-7" viewBox="0 0 512 512" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M414.4 26.2c-14.7-18.7-41.2-22.1-59.9-7.4L325 42.1c-42.5 33.5-73.4 78-89.4 128.8-13.4 42.5-19.1 87.1-17 131.7 2.1 44.6 11.9 88.3 28.7 129.2l14.7 35.7c6.7 16.3 22.5 26.7 40.1 26.7 3.5 0 7.1-.4 10.7-1.3 19.8-5 31.7-25.2 26.7-45.1l-14.7-35.7c-13.7-33.3-21.7-68.8-23.4-105.1-1.7-36.3 3-72.5 13.9-107.1 13-41.3 38.1-77.5 72.7-104.8l29.5-23.3c18.6-14.7 22-41.2 7.3-59.9zM224 136.5c-35-18.9-74.6-26.6-114.2-22.3-39.7 4.3-77.5 21.1-109 48.6-16.1 14-18.1 38.2-4.1 54.3 14 16.1 38.2 18.1 54.3 4.1 22.8-19.9 50.1-32.1 78.8-35.2 28.7-3.1 57.4 2.5 82.8 16.1 14.8 8 33.2 5.1 44.7-6.9l1.4-1.5c14.6-15.5 13.1-40.1-4.7-53.7l-10-7.5z"/>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-black tracking-tight text-emerald-950">Bananacure</h1>
+                    <p class="text-xs font-semibold text-yellow-800 tracking-wide">UAV Precise Crop Care</p>
+                </div>
+            </div>
+
+            <nav class="mt-8 px-4 space-y-2">
+                <button onclick="switchTab('dashboard')" id="nav-dashboard" class="nav-link active w-full flex items-center gap-4 px-4 py-3.5 rounded-xl text-left font-medium">
+                    <i class="fa-solid fa-chart-line text-lg"></i>
+                    <span>Dashboard</span>
+                </button>
+                <button onclick="switchTab('add-device')" id="nav-add-device" class="nav-link w-full flex items-center gap-4 px-4 py-3.5 rounded-xl text-left font-medium">
+                    <i class="fa-solid fa-circle-plus text-lg"></i>
+                    <span>Add Device</span>
+                </button>
+                <button onclick="switchTab('add-user')" id="nav-add-user" class="nav-link w-full flex items-center gap-4 px-4 py-3.5 rounded-xl text-left font-medium">
+                    <i class="fa-solid fa-user-gear text-lg"></i>
+                    <span>Add User NAV</span>
+                </button>
+            </nav>
+        </div>
+
+        <div class="p-4 border-t border-black/10">
+            <div class="flex items-center gap-3 p-2 bg-white/40 rounded-xl">
+                <div class="h-10 w-10 rounded-lg bg-emerald-800 flex items-center justify-center font-bold text-yellow-300 shadow">
+                    BC
+                </div>
+                <div>
+                    <h4 class="text-sm font-bold text-emerald-950">Field Supervisor</h4>
+                    <p class="text-xs text-emerald-800 font-medium">Banana Plantation Node</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <main class="flex-1 ml-72 p-8 min-h-screen">
+        
+        <div id="section-dashboard" class="tab-content active-tab space-y-8">
+            <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+                <div>
+                    <h2 class="text-3xl font-extrabold text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]">Precision Monitoring Center</h2>
+                    <p class="text-yellow-500 font-semibold drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)] mt-1">Real-Time Coordinate Feeds & Smart Spray Telemetry</p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <label class="text-sm font-bold text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]"><i class="fa-solid fa-street-view text-yellow-300 mr-2"></i>Target Drone Node:</label>
+                    <select id="deviceSelector" onchange="updateDeviceStats()" class="glass-panel text-emerald-950 px-4 py-2.5 rounded-xl font-semibold outline-none border focus:border-yellow-500 cursor-pointer shadow-sm">
+                        <option value="uav-01">BananaBot Alpha (Nazareth, CDO)</option>
+                        <option value="uav-02">BananaBot Bravo (Carmen, CDO)</option>
+                        <option value="uav-03">BananaBot Charlie (Bukidnon)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="glass-panel p-6 rounded-2xl relative overflow-hidden group transition-transform duration-300 hover:-translate-y-1">
+                    <div class="flex items-center justify-between">
+                        <p class="text-xs font-bold uppercase tracking-wider text-emerald-900/80">Active Location & Coordinates</p>
+                        <span class="text-red-700 text-2xl"><i class="fa-solid fa-map-location-dot"></i></span>
+                    </div>
+                    <div class="mt-4 flex flex-col">
+                        <span id="txt-location" class="text-xl font-black text-emerald-950 tracking-tight leading-tight">--</span>
+                        <div class="mt-2 bg-black/10 rounded-lg p-2 font-mono text-[11px] text-emerald-900 font-bold space-y-0.5">
+                            <div>Lat: <span id="txt-lat" class="text-amber-950">--</span></div>
+                            <div>Lng: <span id="txt-lng" class="text-amber-950">--</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-6 rounded-2xl relative overflow-hidden group transition-transform duration-300 hover:-translate-y-1">
+                    <div class="flex items-center justify-between">
+                        <p class="text-xs font-bold uppercase tracking-wider text-emerald-900/80">Battery Level Status</p>
+                        <span id="batteryIcon" class="text-emerald-800 text-2xl"><i class="fa-solid fa-battery-full"></i></span>
+                    </div>
+                    <div class="mt-4 flex items-baseline gap-2">
+                        <span id="txt-battery" class="text-4xl font-black text-emerald-950 tracking-tight">--</span>
+                        <span id="txt-battery-lbl" class="text-xs font-bold px-2.5 py-0.5 rounded-full">--</span>
+                    </div>
+                    <div class="w-full bg-emerald-950/10 h-2.5 rounded-full mt-5 overflow-hidden">
+                        <div id="bar-battery" class="h-full rounded-full transition-all duration-700" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-6 rounded-2xl relative overflow-hidden group transition-transform duration-300 hover:-translate-y-1">
+                    <div class="flex items-center justify-between">
+                        <p class="text-xs font-bold uppercase tracking-wider text-emerald-900/80">Device Spray Counter</p>
+                        <span class="text-amber-700 text-2xl"><i class="fa-solid fa-spray-can-sparkles"></i></span>
+                    </div>
+                    <div class="mt-4 flex items-baseline gap-2">
+                        <span id="txt-sprays" class="text-4xl font-black text-emerald-950 tracking-tight">--</span>
+                        <span class="text-xs font-bold text-emerald-900">Total Logs</span>
+                    </div>
+                    <p class="text-xs font-bold text-emerald-800 mt-6"><i class="fa-solid fa-location-crosshairs text-amber-600 mr-1"></i>YOLO integration triggers</p>
+                </div>
+
+                <div class="glass-panel p-6 rounded-2xl relative overflow-hidden group transition-transform duration-300 hover:-translate-y-1">
+                    <div class="flex items-center justify-between">
+                        <p class="text-xs font-bold uppercase tracking-wider text-emerald-900/80">Pesticide Tank Level</p>
+                        <span class="text-blue-700 text-2xl"><i class="fa-solid fa-flask-vial"></i></span>
+                    </div>
+                    <div class="mt-4 flex items-baseline gap-2">
+                        <span id="txt-tank" class="text-4xl font-black text-emerald-950 tracking-tight">--</span>
+                        <span class="text-xs font-bold text-emerald-800">/ 100 ml</span>
+                    </div>
+                    <div class="w-full bg-emerald-950/10 h-2.5 rounded-full mt-5 overflow-hidden">
+                        <div id="bar-tank" class="bg-blue-600 h-full rounded-full transition-all duration-700" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-panel p-6 rounded-2xl space-y-4">
+                <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center border-b border-black/10 pb-4 gap-2">
+                    <h3 class="text-lg font-extrabold text-emerald-950 flex items-center gap-2">
+                        <i class="fa-solid fa-clock-rotate-left text-amber-700"></i>
+                        Target Coordinate Log Records
+                    </h3>
+                    <span class="text-xs bg-emerald-900 text-yellow-300 px-3 py-1 rounded-full font-bold uppercase tracking-widest shadow-sm">Live PostgreSQL Sync</span>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm">
+                        <thead>
+                            <tr class="border-b border-black/5 text-emerald-950 font-bold uppercase text-xs tracking-wider">
+                                <th class="py-3">Timestamp</th>
+                                <th class="py-3">Detected Leaf Pathology</th>
+                                <th class="py-3">Target Coordinate Coordinates</th>
+                                <th class="py-3">Discharged Dose</th>
+                                <th class="py-3 text-right">Mission Outcome</th>
+                            </tr>
+                        </thead>
+                        <tbody id="logTableBody" class="text-emerald-900 font-medium">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="section-add-device" class="tab-content space-y-8">
+            <div>
+                <h2 class="text-3xl font-extrabold text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]">Provision New Sprayer Unit</h2>
+                <p class="text-yellow-500 font-semibold drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)] mt-1">Register hardware components to the active agricultural inventory network</p>
+            </div>
+
+            <div class="max-w-2xl glass-panel p-8 rounded-2xl">
+                <form class="space-y-6" onsubmit="event.preventDefault(); alert('Success: New Bananacure Device successfully mapped to inventory!');">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label class="text-sm font-bold text-emerald-950">Drone Hardware Identification Name</label>
+                            <input type="text" placeholder="e.g. BananaBot Delta" class="w-full rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-500 font-semibold shadow-inner" required>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-sm font-bold text-emerald-950">Geographic Placement Location</label>
+                            <input type="text" placeholder="e.g. Gusa, Cagayan de Oro" class="w-full rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-500 font-semibold shadow-inner" required>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="space-y-2">
+                            <label class="text-sm font-bold text-emerald-950">Target Latitude</label>
+                            <input type="text" placeholder="e.g. 8.4811" class="w-full rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-500 font-semibold shadow-inner" required>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-sm font-bold text-emerald-950">Target Longitude</label>
+                            <input type="text" placeholder="e.g. 124.6425" class="w-full rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-500 font-semibold shadow-inner" required>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-sm font-bold text-emerald-950">Fluid Capacity (ml)</label>
+                            <input type="number" value="100" class="w-full rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-500 font-semibold shadow-inner" readonly required>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="text-sm font-bold text-emerald-950">Microcontroller Architecture</label>
+                        <select class="w-full rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-500 font-semibold shadow-inner">
+                            <option>ESP32 DevKit v1 Modules (Wi-Fi/MQTT)</option>
+                            <option>Arduino Mega 2560 Shield Board</option>
+                            <option>Raspberry Pi Companion Computing Unit</option>
+                        </select>
+                    </div>
+
+                    <div class="pt-4">
+                        <button type="submit" class="w-full md:w-auto bg-gradient-to-r from-emerald-800 to-emerald-950 hover:from-emerald-900 hover:to-black text-yellow-300 font-extrabold px-8 py-4 rounded-xl transition-all shadow-md tracking-wider uppercase text-sm">
+                            <i class="fa-solid fa-plus-circle mr-2 text-yellow-400"></i>Register Active Drone Hardware
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="section-add-user" class="tab-content space-y-8">
+            <div>
+                <h2 class="text-3xl font-extrabold text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]">User Navigation Management</h2>
+                <p class="text-yellow-500 font-semibold drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)] mt-1">Configure structural credentials for field crew members and site admins</p>
+            </div>
+
+            <div class="max-w-2xl glass-panel p-8 rounded-2xl">
+                <form class="space-y-6" onsubmit="event.preventDefault(); alert('Success: New Operator Profile stored into database records.');">
+                    <div class="space-y-2">
+                        <label class="text-sm font-bold text-emerald-950">Account Member Fullname</label>
+                        <input type="text" placeholder="Angela Lituañas" class="w-full rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-500 font-semibold shadow-inner" required>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label class="text-sm font-bold text-emerald-950">Unique System Username</label>
+                            <input type="text" placeholder="angela_v_tech" class="w-full rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-500 font-semibold shadow-inner" required>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-sm font-bold text-emerald-950">Emergency Contact Line</label>
+                            <input type="tel" placeholder="+63 917 555 0192" class="w-full rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-500 font-semibold shadow-inner" required>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label class="text-sm font-bold text-emerald-950">Assigned Profile Scope Authority</label>
+                            <select class="w-full rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-500 font-semibold shadow-inner">
+                                <option value="operator">Field Controller / Technical Crew</option>
+                                <option value="admin">System Architect Administrator</option>
+                            </select>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-sm font-bold text-emerald-950">Access Token / Password</label>
+                            <input type="password" placeholder="••••••••••••" class="w-full rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-500 font-semibold shadow-inner" required>
+                        </div>
+                    </div>
+
+                    <div class="pt-4">
+                        <button type="submit" class="w-full md:w-auto bg-gradient-to-r from-amber-600 to-amber-800 hover:from-amber-700 hover:to-amber-900 text-white font-extrabold px-8 py-4 rounded-xl transition-all shadow-md tracking-wider uppercase text-sm">
+                            <i class="fa-solid fa-user-shield mr-2 text-yellow-300"></i>Commit Authorized Profile Data
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // Dictionary tracking comprehensive structural telemetry parameters and geospatial tags
+        const deviceData = {
+            'uav-01': {
+                location: 'Nazareth, CDO',
+                latitude: '8.4725° N',
+                longitude: '124.6496° E',
+                battery: 94,
+                sprays: 19,
+                tank: 80,
+                logs: [
+                    { time: '08:14:22', disease: 'Sigatoka Flag Detected', geo: '8.4722° N, 124.6491° E', volume: '4.5 ml', status: 'Discharged' },
+                    { time: '08:32:05', disease: 'Fusarium Wilt Spread Spot', geo: '8.4735° N, 124.6480° E', volume: '6.0 ml', status: 'Discharged' },
+                    { time: '09:01:50', disease: 'Sigatoka Flag Detected', geo: '8.4711° N, 124.6502° E', volume: '4.8 ml', status: 'Discharged' }
+                ]
+            },
+            'uav-02': {
+                location: 'Carmen, CDO',
+                latitude: '8.4842° N',
+                longitude: '124.6220° E',
+                battery: 68,
+                sprays: 24,
+                tank: 55,
+                logs: [
+                    { time: '09:44:12', disease: 'Fusarium Wilt Spread Spot', geo: '8.4841° N, 124.6212° E', volume: '5.5 ml', status: 'Discharged' },
+                    { time: '10:15:30', disease: 'Sigatoka Flag Detected', geo: '8.4894° N, 124.6281° E', volume: '4.2 ml', status: 'Discharged' }
+                ]
+            },
+            'uav-03': {
+                location: 'Bukidnon Region',
+                latitude: '8.1568° N',
+                longitude: '124.9021° E',
+                battery: 18,
+                sprays: 41,
+                tank: 12,
+                logs: [
+                    { time: '13:11:05', disease: 'Sigatoka Flag Detected', geo: '8.1561° N, 124.9012° E', volume: '5.0 ml', status: 'Discharged' },
+                    { time: '13:22:04', disease: 'Failsafe Triggered Sequence', geo: 'Battery Command Flag', volume: '0.0 ml', status: 'RTH Protocol Active' }
+                ]
+            }
+        };
+
+        // Navigation tab-switching logic handler
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active-tab'));
+            document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+
+            document.getElementById(`section-${tabId}`).classList.add('active-tab');
+            document.getElementById(`nav-${tabId}`).classList.add('active');
+        }
+
+        // Live Select Handler changing values based on the specific chosen active device 
+        function updateDeviceStats() {
+            const currentSelection = document.getElementById('deviceSelector').value;
+            const state = deviceData[currentSelection];
+
+            // Render geographical data and coordinates metrics safely
+            document.getElementById('txt-location').innerText = state.location;
+            document.getElementById('txt-lat').innerText = state.latitude;
+            document.getElementById('txt-lng').innerText = state.longitude;
+            
+            document.getElementById('txt-battery').innerText = state.battery + '%';
+            document.getElementById('txt-sprays').innerText = state.sprays;
+            document.getElementById('txt-tank').innerText = state.tank + ' ml';
+
+            // Adapt structural width levels dynamically
+            document.getElementById('bar-battery').style.width = state.battery + '%';
+            document.getElementById('bar-tank').style.width = state.tank + '%';
+
+            // Visual adaptations for critical battery markers
+            const batteryBar = document.getElementById('bar-battery');
+            const batteryLabel = document.getElementById('txt-battery-lbl');
+            const batteryIcon = document.getElementById('batteryIcon');
+
+            if (state.battery < 25) {
+                batteryBar.className = "h-full rounded-full transition-all duration-700 bg-red-600 animate-pulse";
+                batteryLabel.className = "text-xs font-bold px-2.5 py-0.5 rounded-full bg-red-100 text-red-700";
+                batteryLabel.innerText = "Low Reserve";
+                batteryIcon.className = "text-red-700 text-2xl animate-bounce";
+                batteryIcon.innerHTML = '<i class="fa-solid fa-battery-quarter"></i>';
+            } else {
+                batteryBar.className = "h-full rounded-full transition-all duration-700 bg-emerald-700";
+                batteryLabel.className = "text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800";
+                batteryLabel.innerText = "Nominal Care";
+                batteryIcon.className = "text-emerald-800 text-2xl";
+                batteryIcon.innerHTML = '<i class="fa-solid fa-battery-full"></i>';
+            }
+
+            // Repopulate coordinates monitoring list data safely
+            const logBody = document.getElementById('logTableBody');
+            logBody.innerHTML = '';
+
+            state.logs.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.className = "border-b border-black/5 hover:bg-white/20 transition-all";
+                
+                const badgeTheme = item.status === 'Discharged' 
+                    ? 'bg-emerald-800/10 text-emerald-950 border border-emerald-900/20' 
+                    : 'bg-amber-700/10 text-amber-950 border border-amber-800/20';
+
+                tr.innerHTML = `
+                    <td class="py-4 font-mono text-xs text-emerald-950/70">${item.time}</td>
+                    <td class="py-4 font-bold text-emerald-950">${item.disease}</td>
+                    <td class="py-4 font-mono text-xs">${item.geo}</td>
+                    <td class="py-4 text-emerald-900 font-extrabold">${item.volume}</td>
+                    <td class="py-4 text-right"><span class="text-xs font-bold px-3 py-1 rounded-lg ${badgeTheme}">${item.status}</span></td>
+                `;
+                logBody.appendChild(tr);
+            });
+        }
+
+        // Initialize display configuration context elements on page startup
+        window.onload = function() {
+            updateDeviceStats();
+        };
+    </script>
+</body>
+</html>

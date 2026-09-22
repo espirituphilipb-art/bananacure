@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Bananacure Mobile Terminal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            /* Same requested Green to Yellow to White linear gradient backdrop */
+            background: linear-gradient(135deg, #1e3a1a 0%, #a18105 50%, #ffffff 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: #1c2d15;
+            padding-bottom: 80px; /* Safe padding spacing above the bottom nav bar */
+        }
+        /* Frosted Glassmorphism Panels exactly matching the main system design */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 20px 0 rgba(27, 49, 19, 0.1);
+        }
+        /* Mobile Bottom Tab Bar layout styling */
+        .mobile-nav-btn {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            color: #3b5e2d;
+        }
+        .mobile-nav-btn.active {
+            color: #1e3a1a;
+            transform: translateY(-2px);
+        }
+        .mobile-nav-btn.active i {
+            background: rgba(234, 179, 8, 0.9); /* Highlighted yellow accent indicator circle */
+            color: #1e3a1a;
+            box-shadow: 0 4px 10px rgba(161, 129, 5, 0.3);
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active-tab {
+            display: block;
+            animation: fadeIn 0.3s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        input, select {
+            background: rgba(255, 255, 255, 0.8) !important;
+            color: #1e3a1a !important;
+            border: 1px solid rgba(30, 58, 26, 0.2) !important;
+            -webkit-appearance: none; /* Uniform mobile form rendering override */
+        }
+    </style>
+</head>
+<body class="px-4 pt-4">
+
+    <header class="glass-panel w-full p-4 rounded-2xl flex items-center justify-between mb-5 shadow-sm">
+        <div class="flex items-center gap-3">
+            <div class="bg-yellow-400 text-amber-900 p-2 rounded-xl shadow-inner border border-yellow-300 flex items-center justify-center">
+                <svg class="w-6 h-6" viewBox="0 0 512 512" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M414.4 26.2c-14.7-18.7-41.2-22.1-59.9-7.4L325 42.1c-42.5 33.5-73.4 78-89.4 128.8-13.4 42.5-19.1 87.1-17 131.7 2.1 44.6 11.9 88.3 28.7 129.2l14.7 35.7c6.7 16.3 22.5 26.7 40.1 26.7 3.5 0 7.1-.4 10.7-1.3 19.8-5 31.7-25.2 26.7-45.1l-14.7-35.7c-13.7-33.3-21.7-68.8-23.4-105.1-1.7-36.3 3-72.5 13.9-107.1 13-41.3 38.1-77.5 72.7-104.8l29.5-23.3c18.6-14.7 22-41.2 7.3-59.9zM224 136.5c-35-18.9-74.6-26.6-114.2-22.3-39.7 4.3-77.5 21.1-109 48.6-16.1 14-18.1 38.2-4.1 54.3 14 16.1 38.2 18.1 54.3 4.1 22.8-19.9 50.1-32.1 78.8-35.2 28.7-3.1 57.4 2.5 82.8 16.1 14.8 8 33.2 5.1 44.7-6.9l1.4-1.5c14.6-15.5 13.1-40.1-4.7-53.7l-10-7.5z"/>
+                </svg>
+            </div>
+            <div>
+                <h1 class="text-xl font-black tracking-tight text-emerald-950">Bananacure</h1>
+                <p class="text-[10px] font-bold text-yellow-800 uppercase tracking-wider">Mobile Portal</p>
+            </div>
+        </div>
+        <div class="h-8 w-8 rounded-full bg-emerald-800 flex items-center justify-center text-xs font-bold text-yellow-300">
+            BC
+        </div>
+    </header>
+
+    <main>
+        
+        <div id="section-dashboard" class="tab-content active-tab space-y-4">
+            
+            <div class="glass-panel p-4 rounded-xl space-y-2">
+                <label class="text-xs font-extrabold text-emerald-950 flex items-center gap-2">
+                    <i class="fa-solid fa-crosshairs text-amber-700"></i> Active Plantation Nodes:
+                </label>
+                <div class="relative">
+                    <select id="deviceSelector" onchange="updateDeviceStats()" class="w-full text-sm font-bold text-emerald-950 px-4 py-3 rounded-xl outline-none focus:ring-2 focus:ring-yellow-500 cursor-pointer shadow-inner appearance-none">
+                        <option value="uav-01">BananaBot Alpha (Nazareth, CDO)</option>
+                        <option value="uav-02">BananaBot Bravo (Carmen, CDO)</option>
+                        <option value="uav-03">BananaBot Charlie (Bukidnon)</option>
+                    </select>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-emerald-950">
+                        <i class="fa-solid fa-chevron-down text-xs"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-panel p-4 rounded-xl flex items-center gap-4">
+                <div class="h-12 w-12 rounded-xl bg-red-100 flex items-center justify-center text-red-700 text-xl shadow-inner shrink-0">
+                    <i class="fa-solid fa-map-location-dot"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-[10px] font-bold uppercase tracking-wider text-emerald-900/60">Deployment Site Location</p>
+                    <h3 id="txt-location" class="text-lg font-black text-emerald-950 truncate">--</h3>
+                    <div class="flex gap-4 mt-1 font-mono text-[10px] text-emerald-900 font-bold">
+                        <div>LAT: <span id="txt-lat" class="text-amber-950">--</span></div>
+                        <div>LNG: <span id="txt-lng" class="text-amber-950">--</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-3 gap-2">
+                <div class="glass-panel p-3 rounded-xl flex flex-col justify-between text-center relative">
+                    <p class="text-[9px] font-bold uppercase tracking-tight text-emerald-900/80">Battery</p>
+                    <span id="batteryIcon" class="text-emerald-800 my-1"><i class="fa-solid fa-battery-full"></i></span>
+                    <span id="txt-battery" class="text-xl font-black text-emerald-950">--</span>
+                    <div class="w-full bg-emerald-950/10 h-1.5 rounded-full mt-2 overflow-hidden">
+                        <div id="bar-battery" class="h-full bg-emerald-700 rounded-full transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-3 rounded-xl flex flex-col justify-between text-center">
+                    <p class="text-[9px] font-bold uppercase tracking-tight text-emerald-900/80">Spray Count</p>
+                    <span class="text-amber-700 my-1"><i class="fa-solid fa-spray-can-sparkles"></i></span>
+                    <span id="txt-sprays" class="text-xl font-black text-emerald-950">--</span>
+                    <span class="text-[8px] text-emerald-900/60 font-bold mt-2">Deployments</span>
+                </div>
+
+                <div class="glass-panel p-3 rounded-xl flex flex-col justify-between text-center">
+                    <p class="text-[9px] font-bold uppercase tracking-tight text-emerald-900/80">Tank Fluid</p>
+                    <span class="text-blue-700 my-1"><i class="fa-solid fa-flask-vial"></i></span>
+                    <span id="txt-tank" class="text-xl font-black text-emerald-950">--</span>
+                    <div class="w-full bg-emerald-950/10 h-1.5 rounded-full mt-2 overflow-hidden">
+                        <div id="bar-tank" class="h-full bg-blue-600 rounded-full transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-panel p-4 rounded-xl space-y-3">
+                <div class="flex justify-between items-center border-b border-black/10 pb-2">
+                    <h4 class="text-xs font-black text-emerald-950 uppercase tracking-wider"><i class="fa-solid fa-clock-rotate-left mr-1"></i>Mobile Sync Feed</h4>
+                    <span class="text-[9px] bg-emerald-950 text-yellow-300 font-extrabold px-2 py-0.5 rounded-full">Live Logs</span>
+                </div>
+                <div id="mobileLogContainer" class="space-y-2">
+                    </div>
+            </div>
+        </div>
+
+        <div id="section-add-device" class="tab-content space-y-4">
+            <div class="glass-panel p-4 rounded-xl">
+                <h2 class="text-lg font-black text-emerald-950">Provision New Node</h2>
+                <p class="text-xs font-semibold text-emerald-800">Map new hardware into agricultural registry profiles</p>
+                
+                <form class="space-y-4 mt-4" onsubmit="event.preventDefault(); alert('Success: Mobile added drone successfully.');">
+                    <div class="space-y-1">
+                        <label class="text-xs font-bold text-emerald-950">Hardware Asset Identifier Name</label>
+                        <input type="text" placeholder="e.g. BananaBot Delta" class="w-full rounded-xl px-4 py-3 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-yellow-500 shadow-inner" required>
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-xs font-bold text-emerald-950">Geographic Field Area Name</label>
+                        <input type="text" placeholder="e.g. Kauswagan, CDO" class="w-full rounded-xl px-4 py-3 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-yellow-500 shadow-inner" required>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div class="space-y-1">
+                            <label class="text-xs font-bold text-emerald-950">Target Latitude</label>
+                            <input type="text" placeholder="e.g. 8.4811" class="w-full rounded-xl px-4 py-3 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-yellow-500 shadow-inner" required>
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-xs font-bold text-emerald-950">Target Longitude</label>
+                            <input type="text" placeholder="e.g. 124.6425" class="w-full rounded-xl px-4 py-3 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-yellow-500 shadow-inner" required>
+                        </div>
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-xs font-bold text-emerald-950">Controller Module</label>
+                        <div class="relative">
+                            <select class="w-full rounded-xl px-4 py-3 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-yellow-500 shadow-inner appearance-none">
+                                <option>ESP32 DevKit Core Boards</option>
+                                <option>Arduino Mega 2560 Shield System</option>
+                            </select>
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-emerald-950">
+                                <i class="fa-solid fa-chevron-down text-xs"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="w-full bg-emerald-950 text-yellow-300 font-extrabold p-3.5 rounded-xl transition-all shadow text-xs tracking-wider uppercase mt-2">
+                        <i class="fa-solid fa-plus-circle mr-1 text-yellow-400"></i>Register Drone Node
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div id="section-add-user" class="tab-content space-y-4">
+            <div class="glass-panel p-4 rounded-xl">
+                <h2 class="text-lg font-black text-emerald-950">User Profile Provisioning</h2>
+                <p class="text-xs font-semibold text-emerald-800">Add operational field authorities</p>
+                
+                <form class="space-y-4 mt-4" onsubmit="event.preventDefault(); alert('Success: Operator recorded into server database.');">
+                    <div class="space-y-1">
+                        <label class="text-xs font-bold text-emerald-950">Account Operator Fullname</label>
+                        <input type="text" placeholder="Angela Lituañas" class="w-full rounded-xl px-4 py-3 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-yellow-500 shadow-inner" required>
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-xs font-bold text-emerald-950">System Username Handle</label>
+                        <input type="text" placeholder="angela_v_tech" class="w-full rounded-xl px-4 py-3 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-yellow-500 shadow-inner" required>
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-xs font-bold text-emerald-950">Emergency Field Contact Line</label>
+                        <input type="tel" placeholder="+63 917 555 0192" class="w-full rounded-xl px-4 py-3 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-yellow-500 shadow-inner" required>
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-xs font-bold text-emerald-950">Profile Pass Key Token</label>
+                        <input type="password" placeholder="••••••••••••" class="w-full rounded-xl px-4 py-3 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-yellow-500 shadow-inner" required>
+                    </div>
+                    <button type="submit" class="w-full bg-amber-700 text-white font-extrabold p-3.5 rounded-xl transition-all shadow text-xs tracking-wider uppercase mt-2">
+                        <i class="fa-solid fa-user-shield mr-1 text-yellow-300"></i>Save Active Profile
+                    </button>
+                </form>
+            </div>
+        </div>
+
+    </main>
+
+    <div class="fixed bottom-0 left-0 right-0 glass-panel border-t border-black/10 px-6 py-2 flex justify-between items-center z-50 rounded-t-3xl shadow-[0_-4px_24px_rgba(0,0,0,0.08)]">
+        <button onclick="switchTab('dashboard')" id="nav-dashboard" class="mobile-nav-btn active flex flex-col items-center justify-center w-16 py-1">
+            <i class="fa-solid fa-chart-line text-sm w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300"></i>
+            <span class="text-[9px] font-bold mt-1 tracking-tight">Dashboard</span>
+        </button>
+        <button onclick="switchTab('add-device')" id="nav-add-device" class="mobile-nav-btn flex flex-col items-center justify-center w-16 py-1">
+            <i class="fa-solid fa-circle-plus text-sm w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300"></i>
+            <span class="text-[9px] font-bold mt-1 tracking-tight">+ Device</span>
+        </button>
+        <button onclick="switchTab('add-user')" id="nav-add-user" class="mobile-nav-btn flex flex-col items-center justify-center w-16 py-1">
+            <i class="fa-solid fa-user-gear text-sm w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300"></i>
+            <span class="text-[9px] font-bold mt-1 tracking-tight">User NAV</span>
+        </button>
+    </div>
+
+    <script>
+        const deviceData = {
+            'uav-01': {
+                location: 'Nazareth, CDO',
+                latitude: '8.4725° N',
+                longitude: '124.6496° E',
+                battery: 94,
+                sprays: 19,
+                tank: 80,
+                logs: [
+                    { time: '08:14:22', disease: 'Sigatoka Flag', geo: '8.4722° N, 124.6491° E', vol: '4.5 ml', res: 'Discharged' },
+                    { time: '08:32:05', disease: 'Fusarium Wilt Spot', geo: '8.4735° N, 124.6480° E', vol: '6.0 ml', res: 'Discharged' },
+                    { time: '09:01:50', disease: 'Sigatoka Flag', geo: '8.4711° N, 124.6502° E', vol: '4.8 ml', res: 'Discharged' }
+                ]
+            },
+            'uav-02': {
+                location: 'Carmen, CDO',
+                latitude: '8.4842° N',
+                longitude: '124.6220° E',
+                battery: 68,
+                sprays: 24,
+                tank: 55,
+                logs: [
+                    { time: '09:44:12', disease: 'Fusarium Wilt Spot', geo: '8.4841° N, 124.6212° E', vol: '5.5 ml', res: 'Discharged' },
+                    { time: '10:15:30', disease: 'Sigatoka Flag', geo: '8.4894° N, 124.6281° E', vol: '4.2 ml', res: 'Discharged' }
+                ]
+            },
+            'uav-03': {
+                location: 'Bukidnon Region',
+                latitude: '8.1568° N',
+                longitude: '124.9021° E',
+                battery: 18,
+                sprays: 41,
+                tank: 12,
+                logs: [
+                    { time: '13:11:05', disease: 'Sigatoka Flag', geo: '8.1561° N, 124.9012° E', vol: '5.0 ml', res: 'Discharged' },
+                    { time: '13:22:04', disease: 'Failsafe Trigger', geo: 'Battery Flag Command', vol: '0.0 ml', res: 'RTH Active' }
+                ]
+            }
+        };
+
+        // Navigation state handler mapping logic
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active-tab'));
+            document.querySelectorAll('.mobile-nav-btn').forEach(el => el.classList.remove('active'));
+
+            document.getElementById(`section-${tabId}`).classList.add('active-tab');
+            document.getElementById(`nav-${tabId}`).classList.add('active');
+            
+            // Provide slight mobile haptic vibration feedback on supported devices
+            if (navigator.vibrate) navigator.vibrate(15);
+        }
+
+        // Live Telemetry synchronization updater logic loop
+        function updateDeviceStats() {
+            const currentSelection = document.getElementById('deviceSelector').value;
+            const state = deviceData[currentSelection];
+
+            // Render descriptive geolocation tags safely
+            document.getElementById('txt-location').innerText = state.location;
+            document.getElementById('txt-lat').innerText = state.latitude;
+            document.getElementById('txt-lng').innerText = state.longitude;
+
+            document.getElementById('txt-battery').innerText = state.battery + '%';
+            document.getElementById('txt-sprays').innerText = state.sprays;
+            document.getElementById('txt-tank').innerText = state.tank + ' ml';
+
+            // Scale fluid elements metrics levels visually
+            document.getElementById('bar-battery').style.width = state.battery + '%';
+            document.getElementById('bar-tank').style.width = state.tank + '%';
+
+            // Battery state marker color mutations for small mobile alerts
+            const barBattery = document.getElementById('bar-battery');
+            const iconBattery = document.getElementById('batteryIcon');
+            if (state.battery < 25) {
+                barBattery.className = "h-full bg-red-600 rounded-full transition-all duration-500 animate-pulse";
+                iconBattery.className = "text-red-700 my-1 animate-bounce";
+                iconBattery.innerHTML = '<i class="fa-solid fa-battery-quarter"></i>';
+            } else {
+                barBattery.className = "h-full bg-emerald-700 rounded-full transition-all duration-500";
+                iconBattery.className = "text-emerald-800 my-1";
+                iconBattery.innerHTML = '<i class="fa-solid fa-battery-full"></i>';
+            }
+
+            // Injected compact log rows optimised cleanly for variable touch tracking lists
+            const container = document.getElementById('mobileLogContainer');
+            container.innerHTML = '';
+
+            state.logs.forEach(log => {
+                const item = document.createElement('div');
+                item.className = "bg-white/40 p-3 rounded-xl flex flex-col justify-between gap-1 text-xs border border-white/50";
+                
+                const badgeStyle = log.res === 'Discharged' 
+                    ? 'bg-emerald-900 text-yellow-300' 
+                    : 'bg-amber-700 text-white';
+
+                item.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <span class="font-extrabold text-emerald-950">${log.disease}</span>
+                        <span class="text-[9px] font-bold px-2 py-0.5 rounded ${badgeStyle}">${log.res}</span>
+                    </div>
+                    <div class="text-[10px] font-mono text-emerald-900/70 flex justify-between">
+                        <span>Coord: ${log.geo}</span>
+                        <span class="font-bold text-emerald-950">${log.vol}</span>
+                    </div>
+                    <div class="text-[9px] text-right text-emerald-900/50 font-semibold">${log.time}</div>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        // Initialize execution on content render cycle window load
+        window.onload = function() {
+            updateDeviceStats();
+        };
+    </script>
+</body>
+</html>

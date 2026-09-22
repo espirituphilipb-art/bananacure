@@ -1,0 +1,20 @@
+# Virtual Environment
+env/
+venv/
+ENV/
+*.env
+
+# Python bytecode & cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Database
+*.sqlite3
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# VS Code settings
+.vscode/
