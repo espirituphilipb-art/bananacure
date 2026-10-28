@@ -96,6 +96,14 @@ DATABASES = {
         'PASSWORD': '123123123',
         'HOST': '127.0.0.1',
         'PORT': '5432',
+    },
+    'pc_b_db': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'bananacure',
+        'USER': 'postgres',
+        'PASSWORD': '123123123',
+        'HOST': '192.168.254.109',  # Updated with PC-B's real IP
+        'PORT': '5432',
     }
 }
 
