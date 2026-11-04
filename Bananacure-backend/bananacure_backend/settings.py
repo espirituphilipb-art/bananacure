@@ -96,9 +96,17 @@ DATABASES = {
         'PASSWORD': '123123123',
         'HOST': '127.0.0.1',
         'PORT': '5432',
+    },
+    'pc_b_db': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'bananacure',
+        'USER': 'postgres',
+        'PASSWORD': '123123123',
+        'HOST': '192.168.137.1',  # PC-B IP address
+        'PORT': '5432',
     }
 }
-
+DATABASE_ROUTERS = ['bananacure_backend.db_router.SecondaryDBRouter']
 
 # Password validation
 # https://docs.djangoproject.com/en/6.1/ref/settings/#auth-password-validators
