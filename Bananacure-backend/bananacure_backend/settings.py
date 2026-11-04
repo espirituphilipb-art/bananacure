@@ -102,7 +102,7 @@ DATABASES = {
         'NAME': 'bananacure',
         'USER': 'postgres',
         'PASSWORD': '123123123',
-        'HOST': '192.168.137.1',  # PC-B IP address
+        'HOST': '192.168.254.109',  # Updated with PC-B's real IP
         'PORT': '5432',
     }
 }
