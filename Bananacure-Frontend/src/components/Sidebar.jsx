@@ -1,121 +1,80 @@
-import { Link, useLocation } from "react-router-dom";
-
+import { NavLink, useNavigate } from "react-router-dom";
 import {
   FaChartLine,
-  FaPlusCircle,
+  FaBroadcastTower,
   FaUsers,
-  FaLeaf,
   FaSignOutAlt,
-  FaBroadcastTower
 } from "react-icons/fa";
+import "./Sidebar.css";
 
 function Sidebar() {
-  const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    sessionStorage.clear();
+    navigate("/login", { replace: true });
+  };
+
+  const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
+  const userName = storedUser.username || "Field Supervisor";
 
   return (
-    <aside className="sidebar">
+    <div className="dock-container">
+      <nav className="bottom-dock">
+        {/* Navigation Items */}
+        <div className="dock-nav">
+          <NavLink
+            to="/dashboard"
+            className={({ isActive }) =>
+              isActive ? "dock-btn active" : "dock-btn"
+            }
+          >
+            <FaChartLine className="dock-icon" />
+            <span className="dock-label">Dashboard</span>
+          </NavLink>
 
-      {/* ================= LOGO ================= */}
+          <NavLink
+            to="/devices"
+            className={({ isActive }) =>
+              isActive ? "dock-btn active" : "dock-btn"
+            }
+          >
+            <FaBroadcastTower className="dock-icon" />
+            <span className="dock-label">Devices</span>
+          </NavLink>
 
-      <div>
-
-        <div className="logo">
-
-          <div className="logo-box">
-            <FaLeaf />
-          </div>
-
-          <div className="logo-text">
-            <h2>Bananacure</h2>
-            <p>Precision Drone Spraying System</p>
-          </div>
-
+          <NavLink
+            to="/users"
+            className={({ isActive }) =>
+              isActive ? "dock-btn active" : "dock-btn"
+            }
+          >
+            <FaUsers className="dock-icon" />
+            <span className="dock-label">Users</span>
+          </NavLink>
         </div>
 
-        {/* ================= NAVIGATION ================= */}
+        {/* Divider */}
+        <div className="dock-divider"></div>
 
-        <nav>
-
-          <Link to="/dashboard" className="nav-link">
-
-            <button
-              className={
-                location.pathname === "/dashboard"
-                  ? "nav-btn active"
-                  : "nav-btn"
-              }
-            >
-              <FaChartLine />
-              <span>Dashboard</span>
-            </button>
-
-          </Link>
-
-          <Link to="/devices" className="nav-link">
-
-            <button
-              className={
-                location.pathname === "/devices"
-                  ? "nav-btn active"
-                  : "nav-btn"
-              }
-            >
-              <FaBroadcastTower />
-              <span>Devices</span>
-            </button>
-
-          </Link>
-
-          <Link to="/users" className="nav-link">
-
-            <button
-              className={
-                location.pathname === "/users"
-                  ? "nav-btn active"
-                  : "nav-btn"
-              }
-            >
-              <FaUsers />
-              <span>Users</span>
-            </button>
-
-          </Link>
-
-        </nav>
-
-      </div>
-
-      {/* ================= FOOTER ================= */}
-
-      <div>
-
-        <div className="sidebar-footer">
-
-          <div className="footer-avatar">
-            BC
-          </div>
-
-          <div className="footer-text">
-
-            <h4>Field Supervisor</h4>
-
+        {/* Profile Info */}
+        <div className="dock-user">
+          <div className="dock-avatar">BC</div>
+          <div className="dock-user-info">
+            <h4>{userName}</h4>
             <p>Drone Monitoring Center</p>
-
           </div>
-
         </div>
 
-        <button className="logout-btn">
-
+        {/* Logout Button */}
+        <button onClick={handleLogout} className="dock-logout-btn" type="button">
           <FaSignOutAlt />
-
           <span>Logout</span>
-
         </button>
-
-      </div>
-
-    </aside>
+      </nav>
+    </div>
   );
 }
 

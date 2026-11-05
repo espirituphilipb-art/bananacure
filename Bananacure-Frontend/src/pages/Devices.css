@@ -1,0 +1,322 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Outer Sage-Green Frame Container (Matches Dashboard) */
+.devices-outer-frame {
+  min-height: 100vh;
+  width: 100vw;
+  box-sizing: border-box;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: #5c6f4a;
+  padding: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  color: #2b3a29;
+}
+
+/* Inner Card Container (Matches Dashboard) */
+.devices-card-wrapper {
+  width: 100%;
+  max-width: 1680px;
+  min-height: calc(100vh - 32px);
+  background: linear-gradient(180deg, #f0f3d4 0%, #e5e9b8 100%);
+  border-radius: 20px;
+  /* Top padding clears fixed top header; bottom padding clears dock */
+  padding: 84px 24px 95px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Page Header */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.page-title-group h2 {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: #1e2a1c;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.page-title-group p {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #4a5c48;
+  margin-top: 4px;
+}
+
+.fleet-badge {
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid #c9bf7c;
+  padding: 8px 16px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  color: #2b3a29;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Device Fleet Grid */
+.device-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+  width: 100%;
+}
+
+.device-card {
+  background: #fbf6d8;
+  border: 1px solid #e1d8a4;
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.device-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+}
+
+.device-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.device-info h3 {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #1e2a1c;
+  margin: 0;
+}
+
+.drone-id-tag {
+  font-size: 0.725rem;
+  font-weight: 700;
+  color: #637360;
+  background: rgba(220, 214, 170, 0.5);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+/* Status Pills */
+.status-pill {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.status-pill.online {
+  background: #f0fdf4;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+}
+
+.status-pill.offline {
+  background: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+/* Device Metrics */
+.device-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.device-metric {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.metric-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #5d6e5a;
+}
+
+.battery-indicator {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.progress-bar-bg {
+  flex: 1;
+  height: 8px;
+  background-color: #e2d9a6;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background-color: #688237;
+  border-radius: 20px;
+}
+
+.progress-bar-fill.low {
+  background-color: #dc2626;
+}
+
+.battery-text {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #2b3a29;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.device-meta-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: #5d6e5a;
+  border-top: 1px dashed rgba(226, 217, 166, 0.6);
+  padding-top: 6px;
+}
+
+.device-meta-row strong {
+  color: #1e2a1c;
+}
+
+/* Add Device Form Card */
+.add-device-card {
+  background: #fbf6d8;
+  border: 1px solid #e1d8a4;
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
+}
+
+.card-form-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.form-icon {
+  font-size: 1.5rem;
+  color: #3b5038;
+}
+
+.card-form-header h3 {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #1e2a1c;
+  margin: 0;
+}
+
+.card-form-header p {
+  font-size: 0.78rem;
+  color: #5d6e5a;
+  margin: 2px 0 0 0;
+}
+
+/* Form Grid */
+.device-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #2b3a29;
+}
+
+.form-group input {
+  height: 44px;
+  padding: 0 14px;
+  border: 1px solid #c9bf7c;
+  border-radius: 10px;
+  background-color: #ffffff;
+  color: #2c382b;
+  font-size: 0.875rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.form-group input:focus {
+  border-color: #3b5038;
+  box-shadow: 0 0 0 3px rgba(59, 80, 56, 0.15);
+}
+
+.submit-btn {
+  height: 44px;
+  padding: 0 24px;
+  border-radius: 10px;
+  border: none;
+  background: #3b5038;
+  color: #ffffff;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  align-self: flex-start;
+  transition: background-color 0.2s ease;
+}
+
+.submit-btn:hover {
+  background: #2b3a29;
+}
+
+/* Responsive Handling */
+@media (max-width: 768px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .submit-btn {
+    width: 100%;
+  }
+
+  .page-header {
+    flex-direction: column;
+    gap: 12px;
+  }
+}

@@ -1,0 +1,145 @@
+/* Floating Dock Wrapper */
+.dock-container {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: auto;
+}
+
+/* Main Pill Body */
+.bottom-dock {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background-color: #fdfae7; /* Warm soft yellow tone from screenshot */
+  padding: 8px 16px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15),
+              0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(217, 203, 142, 0.4);
+}
+
+/* Nav links container */
+.dock-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Navigation Buttons */
+.dock-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 8px 20px;
+  border-radius: 14px;
+  text-decoration: none;
+  color: #4a5568;
+  font-size: 0.72rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.dock-icon {
+  font-size: 1rem;
+}
+
+.dock-btn:hover {
+  background-color: rgba(234, 222, 160, 0.3);
+  color: #1a202c;
+}
+
+/* Active Highlight pill (matches screen design) */
+.dock-btn.active {
+  background-color: #eadd9a; /* Highlight yellow active container */
+  color: #2d3748;
+  font-weight: 700;
+}
+
+/* Vertical Separator line */
+.dock-divider {
+  width: 1px;
+  height: 28px;
+  background-color: #dcd2a0;
+  margin: 0 4px;
+}
+
+/* User Info Section */
+.dock-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 4px;
+}
+
+.dock-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #c9bf7c;
+  color: #2d3748;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.dock-user-info h4 {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #2d3748;
+  line-height: 1.1;
+}
+
+.dock-user-info p {
+  margin: 2px 0 0 0;
+  font-size: 0.65rem;
+  color: #718096;
+}
+
+/* Logout Button */
+.dock-logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 12px;
+  background-color: #ffffff;
+  border: 1px solid #dcd2a0;
+  color: #4a5568;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dock-logout-btn:hover {
+  background-color: #f76868;
+  color: #ffffff;
+  border-color: #f76868;
+}
+
+/* Responsive collapse on mobile */
+@media (max-width: 640px) {
+  .dock-container {
+    bottom: 12px;
+    width: 95%;
+  }
+
+  .dock-user-info {
+    display: none;
+  }
+
+  .dock-btn {
+    padding: 8px 12px;
+  }
+}

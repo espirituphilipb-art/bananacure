@@ -1,5 +1,13 @@
 import { useState, useEffect } from "react";
-import Sidebar from "../components/Sidebar";
+import {
+  FaUserShield,
+  FaUserCheck,
+  FaUserPlus,
+  FaEdit,
+  FaTrashAlt,
+  FaUser,
+} from "react-icons/fa";
+import "./Users.css";
 
 function Users() {
   const [users, setUsers] = useState([]);
@@ -86,7 +94,6 @@ function Users() {
   const handleEditSubmit = async (e) => {
     e.preventDefault();
 
-    // Clone form data and delete blank password so backend validation passes
     const payload = { ...formData };
     if (!payload.password || payload.password.trim() === "") {
       delete payload.password;
@@ -156,151 +163,197 @@ function Users() {
   };
 
   return (
-    <div className="dashboard">
-      <Sidebar />
-
-      <main className="content">
+    <div className="users-outer-frame">
+      <div className="users-card-wrapper">
+        
+        {/* Page Header */}
         <div className="page-header">
-          <h1>User Management</h1>
-          <p>Manage system users and permissions.</p>
+          <div className="page-title-group">
+            <h2>User Access Management</h2>
+            <p>Manage system access, roles, and administrative permissions.</p>
+          </div>
+          <div className="users-count-chip">
+            <FaUserCheck />
+            <span>Total Registered: <strong>{users.length} Users</strong></span>
+          </div>
         </div>
 
-        {/* USER TABLE (READ) */}
-        <div className="table-container">
-          <h3>Registered Users</h3>
+        {/* USER TABLE CARD (READ) */}
+        <section className="table-card">
+          <div className="table-card-header">
+            <h3>System Accounts</h3>
+            <span className="subtitle">Active user directory</span>
+          </div>
 
           {loading ? (
-            <p>Loading users...</p>
+            <div className="loading-state">
+              <div className="spinner"></div>
+              <p>Fetching user accounts...</p>
+            </div>
           ) : (
-            <table>
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Username</th>
-                  <th>Email</th>
-                  <th>Role</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {users.map((user) => (
-                  <tr key={user.id}>
-                    <td>{user.first_name || "N/A"}</td>
-                    <td>{user.username}</td>
-                    <td>{user.email || "N/A"}</td>
-                    <td>{user.is_staff ? "Administrator" : "Standard User"}</td>
-                    <td>
-                      <button
-                        onClick={() => openEditModal(user)}
-                        style={{ marginRight: "8px" }}
-                      >
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => openDeleteModal(user)}
-                        style={{ color: "red" }}
-                      >
-                        Delete
-                      </button>
-                    </td>
+            <div className="table-responsive">
+              <table className="user-table">
+                <thead>
+                  <tr>
+                    <th>Full Name</th>
+                    <th>Username</th>
+                    <th>Email Address</th>
+                    <th>Role</th>
+                    <th>Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {users.length === 0 ? (
+                    <tr>
+                      <td colSpan="5" className="empty-state">
+                        No user accounts registered yet.
+                      </td>
+                    </tr>
+                  ) : (
+                    users.map((user) => (
+                      <tr key={user.id}>
+                        <td className="user-name-cell">
+                          <span className="user-avatar-small">
+                            {user.first_name ? user.first_name.charAt(0).toUpperCase() : "U"}
+                          </span>
+                          {user.first_name || "N/A"}
+                        </td>
+                        <td className="username-cell">@{user.username}</td>
+                        <td>{user.email || "N/A"}</td>
+                        <td>
+                          <span
+                            className={`role-badge ${
+                              user.is_staff ? "admin" : "standard"
+                            }`}
+                          >
+                            {user.is_staff ? <FaUserShield /> : <FaUser />}
+                            {user.is_staff ? "Administrator" : "Standard User"}
+                          </span>
+                        </td>
+                        <td>
+                          <div className="action-buttons">
+                            <button
+                              className="action-btn edit"
+                              onClick={() => openEditModal(user)}
+                              title="Edit User"
+                            >
+                              <FaEdit /> Edit
+                            </button>
+                            <button
+                              className="action-btn delete"
+                              onClick={() => openDeleteModal(user)}
+                              title="Delete User"
+                            >
+                              <FaTrashAlt /> Delete
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
           )}
-        </div>
+        </section>
 
-        {/* ADD USER FORM (CREATE) */}
-        <div className="add-user-card">
-          <h2>Add New User</h2>
-          <p className="subtitle">
-            Create a brand new user and add them to the system.
-          </p>
+        {/* ADD USER FORM CARD (CREATE) */}
+        <section className="add-user-card">
+          <div className="card-form-header">
+            <FaUserPlus className="form-icon" />
+            <div>
+              <h3>Add New User Account</h3>
+              <p>Create credentials and grant system access level.</p>
+            </div>
+          </div>
 
-          <form onSubmit={handleCreateSubmit}>
-            <div className="form-row">
-              <label>Full Name</label>
-              <input
-                type="text"
-                name="first_name"
-                value={formData.first_name}
-                onChange={handleChange}
-                placeholder="Philip Espiritu"
-                required
-              />
+          <form onSubmit={handleCreateSubmit} className="user-form">
+            <div className="form-grid">
+              <div className="form-group">
+                <label>Full Name</label>
+                <input
+                  type="text"
+                  name="first_name"
+                  value={formData.first_name}
+                  onChange={handleChange}
+                  placeholder="e.g. Philip Espiritu"
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Username</label>
+                <input
+                  type="text"
+                  name="username"
+                  value={formData.username}
+                  onChange={handleChange}
+                  placeholder="e.g. pespiritu"
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Email Address</label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="user@bananacure.com"
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Password</label>
+                <input
+                  type="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  placeholder="Enter strong password"
+                  required
+                />
+              </div>
+
+              <div className="form-group full-width">
+                <label>Access Level (Role)</label>
+                <select
+                  name="is_staff"
+                  value={formData.is_staff}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      is_staff: e.target.value === "true",
+                    }))
+                  }
+                >
+                  <option value="false">Standard User (Operator View)</option>
+                  <option value="true">Administrator (Full Access)</option>
+                </select>
+              </div>
             </div>
 
-            <div className="form-row">
-              <label>Username</label>
-              <input
-                type="text"
-                name="username"
-                value={formData.username}
-                onChange={handleChange}
-                placeholder="pespiritu"
-                required
-              />
-            </div>
-
-            <div className="form-row">
-              <label>Email Address</label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="user@example.com"
-                required
-              />
-            </div>
-
-            <div className="form-row">
-              <label>Password</label>
-              <input
-                type="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                placeholder="Enter password"
-                required
-              />
-            </div>
-
-            <div className="form-row">
-              <label>Role</label>
-              <select
-                name="is_staff"
-                value={formData.is_staff}
-                onChange={(e) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    is_staff: e.target.value === "true",
-                  }))
-                }
-              >
-                <option value="false">Standard User</option>
-                <option value="true">Administrator</option>
-              </select>
-            </div>
-
-            <div style={{ marginTop: "15px" }}>
-              <button type="submit" className="submit-btn">
-                Create User
-              </button>
-            </div>
+            <button type="submit" className="submit-btn">
+              <FaUserPlus /> Create User Account
+            </button>
           </form>
-        </div>
-      </main>
+        </section>
 
-      {/* EDIT MODAL */}
+      </div>
+
+      {/* EDIT USER MODAL */}
       {isEditModalOpen && (
-        <div className="modal-overlay">
-          <div className="modal-card">
-            <h2>Edit User</h2>
-            <p className="subtitle">Update user details for {selectedUser?.username}</p>
+        <div className="modal-backdrop" onClick={closeModals}>
+          <div className="modal-card" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3>Edit User Account</h3>
+              <p>Modifying settings for @{selectedUser?.username}</p>
+            </div>
 
-            <form onSubmit={handleEditSubmit}>
-              <div className="form-row">
+            <form onSubmit={handleEditSubmit} className="modal-form">
+              <div className="form-group">
                 <label>Full Name</label>
                 <input
                   type="text"
@@ -311,7 +364,7 @@ function Users() {
                 />
               </div>
 
-              <div className="form-row">
+              <div className="form-group">
                 <label>Username</label>
                 <input
                   type="text"
@@ -322,7 +375,7 @@ function Users() {
                 />
               </div>
 
-              <div className="form-row">
+              <div className="form-group">
                 <label>Email Address</label>
                 <input
                   type="email"
@@ -333,19 +386,19 @@ function Users() {
                 />
               </div>
 
-              <div className="form-row">
-                <label>Password (Leave blank to keep unchanged)</label>
+              <div className="form-group">
+                <label>New Password (Optional)</label>
                 <input
                   type="password"
                   name="password"
                   value={formData.password}
                   onChange={handleChange}
-                  placeholder="New password"
+                  placeholder="Leave blank to keep unchanged"
                 />
               </div>
 
-              <div className="form-row">
-                <label>Role</label>
+              <div className="form-group">
+                <label>System Role</label>
                 <select
                   name="is_staff"
                   value={formData.is_staff}
@@ -374,22 +427,23 @@ function Users() {
         </div>
       )}
 
-      {/* DELETE MODAL */}
+      {/* DELETE CONFIRMATION MODAL */}
       {isDeleteModalOpen && (
-        <div className="modal-overlay">
-          <div className="modal-card">
-            <h2>Confirm Delete</h2>
-            <p style={{ margin: "15px 0" }}>
-              Are you sure you want to delete user <strong>{selectedUser?.username}</strong>? This action cannot be undone.
+        <div className="modal-backdrop" onClick={closeModals}>
+          <div className="modal-card delete-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3>Confirm Deletion</h3>
+            </div>
+            <p className="delete-text">
+              Are you sure you want to delete user account <strong>@{selectedUser?.username}</strong>? This action cannot be reversed.
             </p>
-
             <div className="modal-actions">
               <button
                 type="button"
                 onClick={handleDeleteConfirm}
                 className="delete-btn"
               >
-                Yes, Delete
+                Yes, Delete Account
               </button>
               <button type="button" onClick={closeModals} className="cancel-btn">
                 Cancel
@@ -398,6 +452,7 @@ function Users() {
           </div>
         </div>
       )}
+
     </div>
   );
 }

@@ -1,31 +1,33 @@
-import "./App.css";
-import "./index.css";
-
-import {
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
-
-import Login from "./pages/Login";
+import { Routes, Route, useLocation } from "react-router-dom";
+import Header from "./components/Header";
+import Sidebar from "./components/Sidebar";
 import Dashboard from "./pages/Dashboard";
 import Devices from "./pages/Devices";
 import Users from "./pages/Users";
+import Login from "./pages/Login";
+import "./App.css";
 
 function App() {
+  const location = useLocation();
+  // Hide fixed top header & floating bottom sidebar dock on the login page
+  const isLoginPage = location.pathname === "/login" || location.pathname === "/";
+
   return (
-    <Routes>
-      {/* Login */}
-      <Route path="/" element={<Login />} />
+    <div className="app-container">
+      {!isLoginPage && <Header />}
 
-      {/* Main Pages */}
-      <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/devices" element={<Devices />} />
-      <Route path="/users" element={<Users />} />
+      <main className={!isLoginPage ? "app-content-with-header" : "app-login-wrapper"}>
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/devices" element={<Devices />} />
+          <Route path="/users" element={<Users />} />
+        </Routes>
+      </main>
 
-      {/* Redirect unknown routes */}
-      <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
+      {!isLoginPage && <Sidebar />}
+    </div>
   );
 }
 
