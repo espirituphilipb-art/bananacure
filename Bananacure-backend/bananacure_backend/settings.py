@@ -105,7 +105,7 @@ DATABASES = {
         'PORT': '5432',
     }
 }
-
+DATABASE_ROUTERS = ['bananacure_backend.db_router.SecondaryDBRouter']
 
 # Password validation
 # https://docs.djangoproject.com/en/6.1/ref/settings/#auth-password-validators

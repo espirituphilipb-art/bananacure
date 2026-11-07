@@ -664,8 +664,15 @@ select {
   }
 
   .sidebar {
-    width: 100%;
-  }
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  /* If you are using flexbox for the sidebar container, ensure it doesn't stretch */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-shrink: 0; /* Prevents the sidebar from squishing or expanding */
+}
 
   .header {
     flex-direction: column;
